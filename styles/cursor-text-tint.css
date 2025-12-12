@@ -1,0 +1,58 @@
+/* styles/cursor-text-tint.css
+   Localized text tint — tint only glyphs under the cursor using mix-blend-mode.
+*/
+:root {
+  --tint-color: #60a5fa;
+  --spot-radius: 36px; /* ~1cm */
+  --spot-softness: 10px;
+}
+
+/* Add base behavior so pseudo-layer is available when class is toggled */
+.cursor-text-tint {
+  position: relative; /* ensure overlay can be positioned inside */
+  isolation: isolate; /* avoid blending affecting outside contexts */
+}
+
+/* The pseudo-layer paints a small radial tint using mix-blend-mode: color.
+   It uses CSS variables --tx and --ty (percentages) set inline by JS.
+*/
+.cursor-text-tint::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: color; /* tint underlying glyphs without masking */
+  background: radial-gradient(
+    circle at var(--tx, 50%) var(--ty, 50%),
+    color-mix(in srgb, var(--tint-color) 80%, transparent) 0 calc(var(--spot-radius)),
+    transparent calc(calc(var(--spot-radius) + var(--spot-softness)))
+  );
+  opacity: 0.85;
+  transition: opacity 120ms linear, background-position 60ms linear;
+  will-change: background-position, opacity;
+  pointer-events: none;
+}
+
+/* Ensure pseudo-layer does not obscure selectable text hit-testing */
+.cursor-text-tint, .cursor-text-tint * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Reduced motion and touch safety */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-text-tint::after {
+    transition: none !important;
+    background: none !important;
+    opacity: 0 !important;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
+  .cursor-text-tint::after {
+    display: none !important;
+  }
+}

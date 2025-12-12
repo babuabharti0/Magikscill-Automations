@@ -1,0 +1,24 @@
+/* styles/smoother.css */
+.smoother-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.smoother-content {
+  width: 100%;
+  will-change: transform;
+}
+
+/* Fallback for native smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Disable smooth scrolling for reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

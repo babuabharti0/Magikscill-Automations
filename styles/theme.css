@@ -1,0 +1,103 @@
+/* styles/theme.css
+   Theme variables and simple dark/light token overrides.
+   The app reads data-theme="dark" or data-theme="light" on <html>.
+*/
+
+:root {
+  /* Core tokens (Dark Mode Default) */
+  --bg: #020617;
+  --surface: #020b1f;
+  --muted: #020817;
+  --text: #9ca3af;
+  --heading: #f9fafb;
+  --accent: #2563eb;
+  --accent-2: #1d4ed8;
+  --muted-border: #0f172a;
+  --focus-ring: 0 0 0 2px rgba(37,99,235,0.5);
+  --meta-theme: #020617;
+}
+
+:root[data-theme="light"] {
+  /* Light Mode Overrides */
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --muted: #f8fafc;
+  --text: #4b5563;
+  --heading: #111827;
+  --accent: #2563eb;
+  --accent-2: #1d4ed8;
+  --muted-border: #e5e7eb;
+  --focus-ring: 0 0 0 2px rgba(37,99,235,0.25);
+  --meta-theme: #ffffff;
+}
+
+/* Helper to prevent transition flash during theme switch */
+.no-transition, .no-transition * {
+  transition: none !important;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ---------------------------------------------------------
+   Tailwind Utility Overrides for Light Mode
+   Maps dark-mode specific tailwind classes to light variables
+   --------------------------------------------------------- */
+
+/* Backgrounds */
+:root[data-theme="light"] .bg-brand-bg { background-color: var(--bg) !important; }
+:root[data-theme="light"] .bg-brand-bgSoft { background-color: var(--muted) !important; }
+:root[data-theme="light"] .bg-brand-card { 
+  background-color: var(--surface) !important; 
+  border-color: var(--muted-border) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); 
+}
+
+/* Borders */
+:root[data-theme="light"] .border-brand-border { border-color: var(--muted-border) !important; }
+
+/* Text Colors */
+:root[data-theme="light"] .text-brand-textSoft { color: var(--text) !important; }
+:root[data-theme="light"] .text-white { color: var(--heading) !important; }
+:root[data-theme="light"] .text-brand-white { color: var(--heading) !important; }
+
+/* Exceptions: Elements that should remain white/dark even in light mode */
+:root[data-theme="light"] .bg-brand-accent .text-white,
+:root[data-theme="light"] button.text-white,
+:root[data-theme="light"] a.bg-brand-accent,
+:root[data-theme="light"] .group:hover .text-white {
+  color: #ffffff !important;
+}
+
+/* Theme Toggle Button Style */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: var(--heading);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.theme-toggle-btn:hover {
+  background-color: rgba(128, 128, 128, 0.1);
+}
+
+.theme-toggle-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body, .theme-toggle-btn {
+    transition: none !important;
+  }
+}

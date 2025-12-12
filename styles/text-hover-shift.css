@@ -1,0 +1,58 @@
+/* styles/text-hover-shift.css
+   Subtle text color shift for hovered / focused text elements.
+   Designed to be non-disruptive, accessible, and easy to remove.
+*/
+
+:root{
+  /* Hover color: subtle blend toward brand blue (adjust if needed) */
+  --text-hover-color: #60a5fa; /* light blue */
+  --text-hover-duration: 180ms;
+  --text-hover-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Only target common readable inline/block text elements.
+   This avoids recoloring SVGs, icons, or complex widgets unintentionally.
+*/
+:root :is(h1,h2,h3,h4,h5,h6,p,span,li,a,button,label,strong,em,small) {
+  transition: color var(--text-hover-duration) var(--text-hover-ease), text-shadow var(--text-hover-duration) var(--text-hover-ease);
+  -webkit-transition: color var(--text-hover-duration) var(--text-hover-ease), text-shadow var(--text-hover-duration) var(--text-hover-ease);
+  will-change: color, text-shadow;
+  /* preserve existing color by not overriding it here */
+}
+
+/* Apply the hover / keyboard-focus color shift only to the hovered/focused element */
+:root :is(h1,h2,h3,h4,h5,h6,p,span,li,a,button,label,strong,em,small):hover,
+:root :is(h1,h2,h3,h4,h5,h6,p,span,li,a,button,label,strong,em,small):focus-visible {
+  color: var(--text-hover-color) !important;
+  /* subtle luminous edge for contrast, non-invasive */
+  text-shadow: 0 1px 6px rgba(96,165,250,0.06);
+}
+
+/* For anchor elements keep underline/other link styles intact but allow color shift */
+:root a:hover,
+:root a:focus-visible {
+  color: var(--text-hover-color) !important;
+  text-decoration-thickness: auto;
+}
+
+/* Buttons: only shift text color, do not change background or sizes */
+:root button:hover,
+:root button:focus-visible {
+  color: var(--text-hover-color) !important;
+}
+
+/* Respect reduced motion preferences — disable transitions for users who opt out */
+@media (prefers-reduced-motion: reduce) {
+  :root :is(h1,h2,h3,h4,h5,h6,p,span,li,a,button,label,strong,em,small) {
+    transition: none !important;
+    -webkit-transition: none !important;
+  }
+}
+
+/* Fallback: avoid applying to form inputs' placeholder text or inputs themselves */
+:root input:is(:hover,:focus-visible),
+:root textarea:is(:hover,:focus-visible),
+:root select:is(:hover,:focus-visible) {
+  color: inherit;
+  text-shadow: none;
+}

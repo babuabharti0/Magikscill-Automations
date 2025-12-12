@@ -1,0 +1,25 @@
+/* styles/text-hover-safe.css
+   Safe hover color for a single hovered element (non-destructive).
+*/
+:root{
+  --hover-highlight-color: #60a5fa;
+  --hover-duration: 140ms;
+  --hover-ease: cubic-bezier(0.2,0.8,0.2,1);
+}
+
+/* Apply subtle transition for readable text elements */
+:root :is(h1,h2,h3,h4,h5,h6,p,span,li,a,button,label,strong,em,small) {
+  transition: color var(--hover-duration) var(--hover-ease);
+}
+
+/* When JS toggles the helper class we simply set color — no background-clip, no masking */
+.cursor-pointer-highlight {
+  color: var(--hover-highlight-color) !important;
+}
+
+/* Respect reduced motion / disable for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :root :is(h1,h2,h3,h4,h5,h6,p,span,li,a,button,label,strong,em,small) {
+    transition: none !important;
+  }
+}

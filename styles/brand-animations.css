@@ -1,0 +1,58 @@
+:root {
+  --icon-hover-duration: 320ms;
+  --icon-hover-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --icon-hover-scale: 1.06;
+  --icon-hover-rotate: 6deg;
+}
+
+@keyframes icon-hover-breathe {
+  0% { transform: scale(1); }
+  50% { transform: scale(var(--icon-hover-scale)); }
+  100% { transform: scale(1); }
+}
+
+@keyframes icon-hover-rotate {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(var(--icon-hover-rotate)); }
+  100% { transform: rotate(0deg); }
+}
+
+.icon-animate-hover {
+  transform-origin: center;
+  will-change: transform;
+  display: inline-flex;
+}
+
+.icon-animate-hover:hover,
+.icon-animate-hover:focus-visible {
+  animation: icon-hover-breathe var(--icon-hover-duration) var(--icon-hover-ease) 1 both;
+}
+
+.icon-animate-hover--rotate:hover,
+.icon-animate-hover--rotate:focus-visible {
+  animation: icon-hover-rotate var(--icon-hover-duration) var(--icon-hover-ease) 1 both;
+}
+
+/* Button Animations */
+.btn-animate {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-animate:hover, .btn-animate:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-animate:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-animate-hover,
+  .icon-animate-hover--rotate,
+  .btn-animate {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

@@ -1,0 +1,66 @@
+/* styles/cursor-spotlight.css
+   Localized cursor text spotlight (eye-gaze color).
+   Applied as a lightweight radial-mask using CSS variables updated by JS.
+*/
+
+:root {
+  --eye-gaze-color: #60a5fa; /* default "eye-gaze" accent - change if you want */
+  --spot-radius: 36px;       /* ~1cm ≈ 36px (adjust per design) */
+  --spot-softness: 12px;     /* feathering around the spotlight */
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --spot-opacity: 0.95;
+}
+
+/* The overlay element creates a subtle radial color blend over text.
+   It uses mix-blend-mode to only affect underlying text color perceptually.
+*/
+.cursor-spotlight-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* never capture pointer events */
+  z-index: 9998;        /* high but below modals if needed */
+  mix-blend-mode: screen;
+  opacity: var(--spot-opacity);
+  transition: opacity 180ms ease;
+}
+
+/* The actual radial gradient that follows the cursor */
+.cursor-spotlight-overlay::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at var(--spot-x) var(--spot-y),
+    color-mix(in srgb, var(--eye-gaze-color) 70%, transparent) 0 calc(var(--spot-radius)),
+    rgba(0,0,0,0) calc(var(--spot-radius)),
+    rgba(0,0,0,0) calc(calc(var(--spot-radius) + var(--spot-softness)))
+  );
+  mix-blend-mode: overlay;
+  opacity: 1;
+  will-change: background-position;
+  transition: background-position 80ms linear;
+}
+
+/* Make highlight subtler on smaller screens */
+@media (max-width: 640px) {
+  :root { --spot-radius: 28px; --spot-softness: 10px; }
+}
+
+/* Respect reduced motion / disable for users who opt out */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-spotlight-overlay,
+  .cursor-spotlight-overlay::before {
+    transition: none !important;
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* Hide on touch devices explicitly (safety) */
+@media (hover: none) and (pointer: coarse) {
+  .cursor-spotlight-overlay { display: none !important; }
+}

@@ -1,0 +1,132 @@
+/* styles/social-grid.css */
+.sg-wrapper {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.sg-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.sg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.sg-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  text-decoration: none;
+  border-radius: 12px;
+  background-color: rgba(2, 6, 23, 0.5); /* Brand bg soft */
+  border: 1px solid #0f172a; /* Brand border */
+  color: #9ca3af; /* Brand text soft */
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  opacity: 0;
+  transform: translateY(15px);
+  overflow: visible;
+}
+
+.sg-icon-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.sg-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.sg-tooltip {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background: #2563eb;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover / Focus States */
+.sg-item:hover,
+.sg-item:focus-visible {
+  border-color: #2563eb;
+  color: #fff;
+  background-color: rgba(37, 99, 235, 0.1);
+  transform: translateY(0) scale(1.06);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+}
+
+.sg-item:hover .sg-icon,
+.sg-item:focus-visible .sg-icon {
+  transform: scale(1.1);
+}
+
+.sg-item:hover .sg-tooltip,
+.sg-item:focus-visible .sg-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Animation State */
+.sg-item.sg-visible {
+  animation: sg-fade-up 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: var(--sg-delay, 0ms);
+}
+
+@keyframes sg-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .sg-item {
+    transition: none;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .sg-item:hover,
+  .sg-item:focus-visible {
+    transform: none;
+  }
+  .sg-icon {
+    transition: none;
+  }
+  .sg-tooltip {
+    display: none;
+  }
+}

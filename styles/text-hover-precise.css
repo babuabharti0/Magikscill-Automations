@@ -1,0 +1,15 @@
+/* Precise text-only hover highlight */
+:root {
+  --hover-text-accent: #60a5fa;
+  --hover-text-duration: 120ms;
+  --hover-text-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Only change the hovered text element, not the paragraph */
+:is(h1,h2,h3,h4,h5,h6,p,span,li,a,button,label,strong,em,small) {
+  transition: color var(--hover-text-duration) var(--hover-text-ease);
+}
+
+:is(h1,h2,h3,h4,h5,h6,p,span,li,a,button,label,strong,em,small):hover {
+  color: var(--hover-text-accent) !important;
+}

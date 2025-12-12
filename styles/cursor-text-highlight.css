@@ -1,0 +1,46 @@
+/* styles/cursor-text-highlight.css
+   Localized text highlight — affects only glyphs under cursor (~1cm radius).
+*/
+:root{
+  --highlight-color: #60a5fa; /* subtle, eye-catching blue */
+  --spot-radius: 36px;        /* ~1cm */
+  --spot-softness: 6px;       /* feather edge */
+}
+
+/* Base class applied to the single element under the cursor */
+.cursor-text-highlight {
+  /* Use layered radial gradient clipped to text */
+  background-image: radial-gradient(
+    circle at var(--cx) var(--cy),
+    color-mix(in srgb, var(--highlight-color) 80%, transparent) 0 calc(var(--spot-radius)),
+    transparent calc(calc(var(--spot-radius) + var(--spot-softness)))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  transition: background-position 60ms linear, opacity 120ms linear;
+  will-change: background-position;
+}
+
+/* Apply conservative defaults to all readable text so the component only needs to toggle the class */
+:root :is(h1,h2,h3,h4,h5,h6,p,span,li,a,button,label,strong,em,small) {
+  /* ensure background-clip applies properly on elements that might inherit backgrounds */
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Respect reduced motion: completely disable the effect */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-text-highlight {
+    transition: none !important;
+    background-image: none !important;
+    color: inherit !important;
+    -webkit-text-fill-color: inherit !important;
+  }
+}
+
+/* Hide/disable on touch devices to avoid accidental behavior */
+@media (hover: none) and (pointer: coarse) {
+  .cursor-text-highlight { background-image: none !important; color: inherit !important; -webkit-text-fill-color: inherit !important; }
+}
